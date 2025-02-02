@@ -80,4 +80,9 @@ public class ArtigoServiceImpl implements ArtigoService{
         return mongoTemplate.find(query, Artigo.class);
     }
 
+    @Override
+    public void atualizarArtigo(Artigo updateArtigo) {
+        this.artigoRepository.save(updateArtigo);
+    }
+
 }

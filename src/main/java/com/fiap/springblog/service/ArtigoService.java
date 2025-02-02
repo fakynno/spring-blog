@@ -17,4 +17,6 @@ public interface ArtigoService {
 
     List<Artigo> findByDataAndStatus(LocalDateTime data, Integer status);
 
+    void atualizarArtigo(Artigo updateArtigo);
+
 }
