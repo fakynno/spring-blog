@@ -144,6 +144,30 @@ public class ArtigoServiceImpl implements ArtigoService{
 
         Query query = new Query(criteria);
         return mongoTemplate.find(query, Artigo.class);
+    }
+
+    @Override
+    public List<Artigo> criarArtigosEmLote(List<Artigo> artigos) {
+        
+        // para cada artigo, verifica se o autor existe
+        artigos.forEach(artigo -> {
+            if (artigo.getAutor().getCodigo() != null) {
+    
+                // recupera o autor
+                Autor autor = this.autorRepository
+                    .findById(artigo.getAutor().getCodigo())
+                    .orElseThrow(() -> new IllegalArgumentException("Autor não encontrado"));
+    
+                // seta (define) o autor no artigo
+                artigo.setAutor(autor);
+            } else {
+                // caso o autor não exista, seta o autor como null
+                artigo.setAutor(null);
+            }
+        });
+
+        // salva o artigo com os dados do autor (caso existam)
+        return this.artigoRepository.saveAll(artigos);
     }    
 
 }

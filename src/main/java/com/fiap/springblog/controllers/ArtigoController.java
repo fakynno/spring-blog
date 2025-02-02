@@ -95,4 +95,9 @@ public class ArtigoController {
                 return this.artigoService.encontrarArtigosComplexos(status, data, titulo);
             }
 
+    @PostMapping("/lote")
+    public List<Artigo> criarArtigosEmLote(@RequestBody List<Artigo> artigos) {
+        return this.artigoService.criarArtigosEmLote(artigos);
+    }
+
 }
