@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.fiap.springblog.models.Artigo;
@@ -84,5 +85,25 @@ public class ArtigoServiceImpl implements ArtigoService{
     public void atualizarArtigo(Artigo updateArtigo) {
         this.artigoRepository.save(updateArtigo);
     }
+
+    @Override
+    public void atualizarUrlArtigoMongoTemplate(String idArtigo, String novaUrl) {
+        // Define um critério de busca pelo id do artigo
+        Query query = new Query(Criteria
+            .where("_id")
+            .is(idArtigo));
+        
+        // Define o novo valor para o campo url através do método set
+        Update update = new Update().set("url", novaUrl);
+
+        // Faz a chamada do mongoTemplate para atualizar o artigo, passando como parâmetos a query e o update
+        this.mongoTemplate.updateFirst(query, update, Artigo.class);
+    }
+
+    @Override
+    public void deleteById(String idArtigo) {
+        this.artigoRepository.deleteById(idArtigo);
+    }
+    
 
 }

@@ -19,4 +19,8 @@ public interface ArtigoService {
 
     void atualizarArtigo(Artigo updateArtigo);
 
+    void atualizarUrlArtigoMongoTemplate(String idArtigo, String novaUrl);
+
+    void deleteById(String idArtigo);
+
 }

@@ -8,4 +8,5 @@ import com.fiap.springblog.models.Artigo;
 @Repository
 public interface ArtigoRepository extends MongoRepository<Artigo, String> {
 
+    public void deleteById(String idArtigo);
 }
