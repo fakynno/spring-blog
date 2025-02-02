@@ -1,8 +1,10 @@
 package com.fiap.springblog.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fiap.springblog.models.Artigo;
@@ -36,5 +38,16 @@ public class ArtigoController {
     public Artigo criarArtigo(@RequestBody Artigo artigo) {
         return this.artigoService.criarArtigo(artigo);
     }
+
+    @GetMapping("/maiordata")
+    public List<Artigo> findDataGreaterThan(@RequestParam("data") LocalDateTime data) {
+        return this.artigoService.findByDataGreaterThan(data);
+    }
+
+    @GetMapping("/datastatus")
+    public List<Artigo> findDataAndStatus(@RequestParam("data") LocalDateTime data, 
+        @RequestParam("status") Integer status) {
+            return this.artigoService.findByDataAndStatus(data, status);
+        }
 
 }

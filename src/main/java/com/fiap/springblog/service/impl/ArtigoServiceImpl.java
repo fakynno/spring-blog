@@ -1,8 +1,12 @@
 package com.fiap.springblog.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.fiap.springblog.models.Artigo;
@@ -19,6 +23,12 @@ public class ArtigoServiceImpl implements ArtigoService{
 
     @Autowired
     private AutorRepository autorRepository;
+
+    private final MongoTemplate mongoTemplate;
+
+    public ArtigoServiceImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public List<Artigo> listarArtigos() {
@@ -45,10 +55,29 @@ public class ArtigoServiceImpl implements ArtigoService{
 
             // seta (define) o autor no artigo
             artigo.setAutor(autor);
+        } else {
+            // caso o autor não exista, seta o autor como null
+            artigo.setAutor(null);
         }
 
         // salva o artigo com os dados do autor (caso existam)
         return this.artigoRepository.save(artigo);
+    }
+
+    @Override
+    public List<Artigo> findByDataGreaterThan(LocalDateTime data) {
+        Query query = new Query(Criteria.where("dataPublicacao").gt(data));
+        return mongoTemplate.find(query, Artigo.class);
+    }
+
+    @Override
+    public List<Artigo> findByDataAndStatus(LocalDateTime data, Integer status) {
+        Query query = new Query(Criteria
+            .where("dataPublicacao")
+            .is(data)
+            .and("status")
+            .is(status));
+        return mongoTemplate.find(query, Artigo.class);
     }
 
 }
