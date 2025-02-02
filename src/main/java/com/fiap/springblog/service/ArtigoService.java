@@ -29,4 +29,6 @@ public interface ArtigoService {
 
     List<Artigo> obterArtigoPorDataHora(LocalDateTime dataInicio, LocalDateTime dataFim);
 
+    List<Artigo> encontrarArtigosComplexos(Integer status, LocalDateTime data, String titulo);
+
 }

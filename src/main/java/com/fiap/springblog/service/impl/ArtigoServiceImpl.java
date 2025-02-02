@@ -121,6 +121,29 @@ public class ArtigoServiceImpl implements ArtigoService{
     @Override
     public List<Artigo> obterArtigoPorDataHora(LocalDateTime dataInicio, LocalDateTime dataFim) {
         return this.artigoRepository.obterArtigoPorDataHora(dataInicio, dataFim);
+    }
+
+    @Override
+    public List<Artigo> encontrarArtigosComplexos(Integer status, LocalDateTime data, String titulo) {
+        
+        Criteria criteria = new Criteria();
+
+        // 1º Critério de filtros de artigos: data menor ou igual ao parâmetro informado (data)
+        criteria.and("dataPublicacao").lte(data);
+        
+        // 2º Critério de filtros de artigos: apenas com o status especificado
+        if (status != null) {
+            criteria.and("status").is(status);
+        }
+
+        // 3º Critério de filtros de artigos: onde exista o título e que não esteja vazio
+        if (titulo != null && !titulo.isEmpty()) {
+            // o regex é utilizado para buscar o título ignorando maiúsculas e minúsculas
+            criteria.and("titulo").regex(titulo, "i");
+        }
+
+        Query query = new Query(criteria);
+        return mongoTemplate.find(query, Artigo.class);
     }    
 
 }
