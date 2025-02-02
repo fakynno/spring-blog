@@ -27,4 +27,6 @@ public interface ArtigoService {
 
     List<Artigo> findByStatusAndDataPublicacaoGreaterThan(Integer status, LocalDateTime data);
 
+    List<Artigo> obterArtigoPorDataHora(LocalDateTime dataInicio, LocalDateTime dataFim);
+
 }

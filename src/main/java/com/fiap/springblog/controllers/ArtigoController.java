@@ -78,6 +78,13 @@ public class ArtigoController {
             @RequestParam("status") Integer status, 
             @RequestParam("data") LocalDateTime data) {
                 return this.artigoService.findByStatusAndDataPublicacaoGreaterThan(status, data);
-            }    
+            }
+    
+    @GetMapping("/periodo-data-hora")
+    public List<Artigo> obterArtigoPorDataHora(
+            @RequestParam("dataInicio") LocalDateTime dataInicio, 
+            @RequestParam("dataFim") LocalDateTime dataFim) {
+                return this.artigoService.obterArtigoPorDataHora(dataInicio, dataFim);
+            }
 
 }
