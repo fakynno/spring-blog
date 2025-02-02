@@ -25,4 +25,6 @@ public interface ArtigoService {
 
     void deleteArtigoByIdMongoTemplate(String idArtigo);
 
+    List<Artigo> findByStatusAndDataPublicacaoGreaterThan(Integer status, LocalDateTime data);
+
 }

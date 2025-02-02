@@ -72,6 +72,12 @@ public class ArtigoController {
     public void deleteArtigoByIdMongoTemplate(@RequestParam("idArtigo") String idArtigo) {
         this.artigoService.deleteArtigoByIdMongoTemplate(idArtigo);
     }
-    
+
+    @GetMapping("/status-maiordata")
+    public List<Artigo> findByStatusAndDataPublicacaoGreaterThan(
+            @RequestParam("status") Integer status, 
+            @RequestParam("data") LocalDateTime data) {
+                return this.artigoService.findByStatusAndDataPublicacaoGreaterThan(status, data);
+            }    
 
 }
