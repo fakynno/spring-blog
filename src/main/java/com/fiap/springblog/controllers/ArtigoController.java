@@ -67,6 +67,11 @@ public class ArtigoController {
     public void deleteById(@PathVariable String idArtigo) {
         this.artigoService.deleteById(idArtigo);
     }
+
+    @DeleteMapping("/delete")
+    public void deleteArtigoByIdMongoTemplate(@RequestParam("idArtigo") String idArtigo) {
+        this.artigoService.deleteArtigoByIdMongoTemplate(idArtigo);
+    }
     
 
 }

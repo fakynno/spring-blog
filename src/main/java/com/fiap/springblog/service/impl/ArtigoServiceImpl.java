@@ -104,6 +104,14 @@ public class ArtigoServiceImpl implements ArtigoService{
     public void deleteById(String idArtigo) {
         this.artigoRepository.deleteById(idArtigo);
     }
+
+    @Override
+    public void deleteArtigoByIdMongoTemplate(String idArtigo) {
+        Query query = new Query(Criteria
+            .where("_id")
+            .is(idArtigo));
+        this.mongoTemplate.remove(query, Artigo.class);
+    }
     
 
 }

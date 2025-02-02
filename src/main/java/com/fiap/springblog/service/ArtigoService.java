@@ -23,4 +23,6 @@ public interface ArtigoService {
 
     void deleteById(String idArtigo);
 
+    void deleteArtigoByIdMongoTemplate(String idArtigo);
+
 }
