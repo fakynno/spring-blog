@@ -11,6 +11,9 @@ import com.fiap.springblog.models.Artigo;
 import com.fiap.springblog.service.ArtigoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -98,6 +101,12 @@ public class ArtigoController {
     @PostMapping("/lote")
     public List<Artigo> criarArtigosEmLote(@RequestBody List<Artigo> artigos) {
         return this.artigoService.criarArtigosEmLote(artigos);
+    }
+
+    @GetMapping("/busca-paginada")
+    public ResponseEntity<Page<Artigo>> buscarArtigosPaginados(Pageable pageable) {
+        Page<Artigo> artigos = this.artigoService.buscarArtigosPaginados(pageable);
+        return ResponseEntity.ok(artigos);
     }
 
 }

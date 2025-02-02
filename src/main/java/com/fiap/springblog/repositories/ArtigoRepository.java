@@ -3,6 +3,8 @@ package com.fiap.springblog.repositories;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,4 +20,6 @@ public interface ArtigoRepository extends MongoRepository<Artigo, String> {
 
     @Query("{ $and: [ { 'dataPublicacao': { $gte: ?0 } }, { 'dataPublicacao': { $lte: ?1 } } ] }")
     public List<Artigo> obterArtigoPorDataHora(LocalDateTime dataInicio, LocalDateTime dataFim);
+
+    Page<Artigo> findAll(Pageable pageable);
 }

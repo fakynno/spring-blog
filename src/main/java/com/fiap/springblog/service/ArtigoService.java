@@ -3,6 +3,9 @@ package com.fiap.springblog.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.fiap.springblog.models.Artigo;
 
 public interface ArtigoService {
@@ -32,5 +35,7 @@ public interface ArtigoService {
     List<Artigo> obterArtigoPorDataHora(LocalDateTime dataInicio, LocalDateTime dataFim);
 
     List<Artigo> encontrarArtigosComplexos(Integer status, LocalDateTime data, String titulo);
+
+    Page<Artigo> buscarArtigosPaginados(Pageable pageable);
 
 }

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -168,6 +170,11 @@ public class ArtigoServiceImpl implements ArtigoService{
 
         // salva o artigo com os dados do autor (caso existam)
         return this.artigoRepository.saveAll(artigos);
+    }
+
+    @Override
+    public Page<Artigo> buscarArtigosPaginados(Pageable pageable) {
+        return this.artigoRepository.findAll(pageable);
     }    
 
 }
