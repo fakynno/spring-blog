@@ -38,4 +38,6 @@ public interface ArtigoService {
 
     Page<Artigo> buscarArtigosPaginados(Pageable pageable);
 
+    List<Artigo> findByStatusOrderByTituloAsc(Integer status);
+
 }

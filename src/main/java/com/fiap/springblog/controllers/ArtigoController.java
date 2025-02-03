@@ -109,4 +109,9 @@ public class ArtigoController {
         return ResponseEntity.ok(artigos);
     }
 
+    @GetMapping("/ordenacao-status")
+    public List<Artigo> findByStatusOrderByTituloAsc(@RequestParam("status") Integer status) {
+        return this.artigoService.findByStatusOrderByTituloAsc(status);
+    }
+
 }

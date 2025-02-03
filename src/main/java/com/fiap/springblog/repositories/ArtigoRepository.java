@@ -21,5 +21,8 @@ public interface ArtigoRepository extends MongoRepository<Artigo, String> {
     @Query("{ $and: [ { 'dataPublicacao': { $gte: ?0 } }, { 'dataPublicacao': { $lte: ?1 } } ] }")
     public List<Artigo> obterArtigoPorDataHora(LocalDateTime dataInicio, LocalDateTime dataFim);
 
+    @SuppressWarnings("null")
     Page<Artigo> findAll(Pageable pageable);
+
+    public List<Artigo> findByStatusOrderByTituloAsc(Integer status);
 }

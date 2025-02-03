@@ -175,6 +175,11 @@ public class ArtigoServiceImpl implements ArtigoService{
     @Override
     public Page<Artigo> buscarArtigosPaginados(Pageable pageable) {
         return this.artigoRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Artigo> findByStatusOrderByTituloAsc(Integer status) {
+        return this.artigoRepository.findByStatusOrderByTituloAsc(status);
     }    
 
 }
