@@ -40,4 +40,6 @@ public interface ArtigoService {
 
     List<Artigo> findByStatusOrderByTituloAsc(Integer status);
 
+    List<Artigo> obterArtigoPorStatusComOrdenacao(Integer status);
+
 }

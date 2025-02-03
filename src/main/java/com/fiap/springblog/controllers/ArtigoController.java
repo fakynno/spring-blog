@@ -114,4 +114,9 @@ public class ArtigoController {
         return this.artigoService.findByStatusOrderByTituloAsc(status);
     }
 
+    @GetMapping("/obter-status-ordenado")
+    public List<Artigo> obterArtigoPorStatusPorOrdenacao(@RequestParam("status") Integer status) {
+        return this.artigoService.obterArtigoPorStatusComOrdenacao(status);
+    }
+
 }

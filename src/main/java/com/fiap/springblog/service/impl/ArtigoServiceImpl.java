@@ -180,6 +180,11 @@ public class ArtigoServiceImpl implements ArtigoService{
     @Override
     public List<Artigo> findByStatusOrderByTituloAsc(Integer status) {
         return this.artigoRepository.findByStatusOrderByTituloAsc(status);
+    }
+
+    @Override
+    public List<Artigo> obterArtigoPorStatusComOrdenacao(Integer status) {
+        return this.artigoRepository.obterArtigoPorStatusComOrdenacao(status);
     }    
 
 }
