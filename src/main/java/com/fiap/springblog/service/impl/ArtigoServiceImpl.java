@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -174,7 +176,13 @@ public class ArtigoServiceImpl implements ArtigoService{
 
     @Override
     public Page<Artigo> buscarArtigosPaginados(Pageable pageable) {
-        return this.artigoRepository.findAll(pageable);
+        Sort sort = Sort.by("titulo").ascending();
+        Pageable paginacao = PageRequest.of(
+            pageable.getPageNumber()
+            ,pageable.getPageSize()
+            , sort);
+
+        return this.artigoRepository.findAll(paginacao);
     }
 
     @Override
