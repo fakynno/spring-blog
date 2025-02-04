@@ -42,4 +42,8 @@ public interface ArtigoService {
 
     List<Artigo> obterArtigoPorStatusComOrdenacao(Integer status);
 
+    List<Artigo> findByText(String termoDePesquisa);
+
+    List<Artigo> findByTexto(String textoDePesquisa);
+
 }
