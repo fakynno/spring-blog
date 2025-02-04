@@ -1,5 +1,6 @@
 package com.fiap.springblog.controllers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fiap.springblog.models.Artigo;
 import com.fiap.springblog.models.ArtigoStatusCount;
+import com.fiap.springblog.models.AutorArtigosCount;
 import com.fiap.springblog.service.ArtigoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,5 +131,12 @@ public class ArtigoController {
     public List<ArtigoStatusCount> contarArtigosPorStatus() {
         return this.artigoService.obterQtdArtigosPorStatus();
     }
+
+    @GetMapping("/contar-artigos-por-autor")
+    public List<AutorArtigosCount> obterTotalArtigosPorAutorPorPeriodo(
+            @RequestParam("dataInicio") LocalDate dataInicio, 
+            @RequestParam("dataFim") LocalDate dataFim) {
+                return this.artigoService.obterTotalArtigosPorAutorPorPeriodo(dataInicio, dataFim);
+            }
 
 }

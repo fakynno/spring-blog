@@ -1,5 +1,6 @@
 package com.fiap.springblog.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import com.fiap.springblog.models.Artigo;
 import com.fiap.springblog.models.ArtigoStatusCount;
 import com.fiap.springblog.models.Autor;
+import com.fiap.springblog.models.AutorArtigosCount;
 import com.fiap.springblog.repositories.ArtigoRepository;
 import com.fiap.springblog.repositories.AutorRepository;
 import com.fiap.springblog.service.ArtigoService;
@@ -226,6 +228,30 @@ public class ArtigoServiceImpl implements ArtigoService{
         
         AggregationResults<ArtigoStatusCount> result = 
                     mongoTemplate.aggregate(typedAggregation, ArtigoStatusCount.class);
+
+        return result.getMappedResults();
+    }
+
+    @Override
+    public List<AutorArtigosCount> obterTotalArtigosPorAutorPorPeriodo(LocalDate dataInicio, LocalDate dataFim){
+        
+        TypedAggregation<Artigo> typedAggregation = 
+            Aggregation.newAggregation(
+                Artigo.class,
+                // usamos o método match para filtrar os artigos por data de publicação
+                Aggregation.match(
+                    Criteria.where("dataPublicacao")
+                        .gte(dataInicio.atStartOfDay())
+                        .lt(dataFim.plusDays(1).atStartOfDay())
+                ),
+                // em seguida usamos o método group para definir qual campo vamos usar para agrupar os dados
+                Aggregation.group("autor").count().as("quantidade"),
+                // por fim, usamos o método project para projetar(definir) quais campos serão retornados
+                Aggregation.project("quantidade").and("autor").previousOperation()                
+                );
+
+        AggregationResults<AutorArtigosCount> result = 
+                    mongoTemplate.aggregate(typedAggregation, AutorArtigosCount.class);
 
         return result.getMappedResults();
     }

@@ -1,5 +1,6 @@
 package com.fiap.springblog.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.fiap.springblog.models.Artigo;
 import com.fiap.springblog.models.ArtigoStatusCount;
+import com.fiap.springblog.models.AutorArtigosCount;
 
 public interface ArtigoService {
 
@@ -48,5 +50,7 @@ public interface ArtigoService {
     List<Artigo> findByTexto(String textoDePesquisa);
 
     List<ArtigoStatusCount> obterQtdArtigosPorStatus();
+
+    List<AutorArtigosCount> obterTotalArtigosPorAutorPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
 
 }
