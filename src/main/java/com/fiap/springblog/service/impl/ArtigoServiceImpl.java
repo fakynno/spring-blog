@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fiap.springblog.models.Artigo;
 import com.fiap.springblog.models.ArtigoStatusCount;
@@ -48,6 +49,7 @@ public class ArtigoServiceImpl implements ArtigoService{
         return this.artigoRepository.findAll();        
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Artigo buscarArtigoPorCodigo(String codigo) {
         return this.artigoRepository
@@ -55,6 +57,7 @@ public class ArtigoServiceImpl implements ArtigoService{
             .orElseThrow(() -> new IllegalArgumentException("Artigo não encontrado"));
     }
 
+    @Transactional
     @Override
     public Artigo criarArtigo(Artigo artigo) {
 
@@ -93,11 +96,13 @@ public class ArtigoServiceImpl implements ArtigoService{
         return mongoTemplate.find(query, Artigo.class);
     }
 
+    @Transactional
     @Override
     public void atualizarArtigo(Artigo updateArtigo) {
         this.artigoRepository.save(updateArtigo);
     }
 
+    @Transactional
     @Override
     public void atualizarUrlArtigoMongoTemplate(String idArtigo, String novaUrl) {
         // Define um critério de busca pelo id do artigo
@@ -112,11 +117,13 @@ public class ArtigoServiceImpl implements ArtigoService{
         this.mongoTemplate.updateFirst(query, update, Artigo.class);
     }
 
+    @Transactional
     @Override
     public void deleteById(String idArtigo) {
         this.artigoRepository.deleteById(idArtigo);
     }
 
+    @Transactional
     @Override
     public void deleteArtigoByIdMongoTemplate(String idArtigo) {
         Query query = new Query(Criteria
