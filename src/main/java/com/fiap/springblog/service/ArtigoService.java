@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.fiap.springblog.models.Artigo;
+import com.fiap.springblog.models.ArtigoStatusCount;
 
 public interface ArtigoService {
 
@@ -45,5 +46,7 @@ public interface ArtigoService {
     List<Artigo> findByText(String termoDePesquisa);
 
     List<Artigo> findByTexto(String textoDePesquisa);
+
+    List<ArtigoStatusCount> obterQtdArtigosPorStatus();
 
 }

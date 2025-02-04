@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fiap.springblog.models.Artigo;
+import com.fiap.springblog.models.ArtigoStatusCount;
 import com.fiap.springblog.service.ArtigoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,11 @@ public class ArtigoController {
     @GetMapping("/busca-por-texto")
     public List<Artigo> findByTexto(@RequestParam("texto") String textoDePesquisa) {
         return this.artigoService.findByTexto(textoDePesquisa);
+    }
+
+    @GetMapping("/contar-artigos-por-status")
+    public List<ArtigoStatusCount> contarArtigosPorStatus() {
+        return this.artigoService.obterQtdArtigosPorStatus();
     }
 
 }

@@ -9,6 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
@@ -17,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.fiap.springblog.models.Artigo;
+import com.fiap.springblog.models.ArtigoStatusCount;
 import com.fiap.springblog.models.Autor;
 import com.fiap.springblog.repositories.ArtigoRepository;
 import com.fiap.springblog.repositories.AutorRepository;
@@ -208,6 +212,22 @@ public class ArtigoServiceImpl implements ArtigoService{
                 TextCriteria.forDefaultLanguage().matchingPhrase(textoDePesquisa);
         Query query = TextQuery.queryText(textCriteria).sortByScore();
         return mongoTemplate.find(query, Artigo.class);
+    }
+
+    @Override
+    public List<ArtigoStatusCount> obterQtdArtigosPorStatus() {
+
+        TypedAggregation<Artigo> typedAggregation = 
+            Aggregation.newAggregation(
+                Artigo.class,
+                Aggregation.group("status").count().as("quantidade"),
+                Aggregation.project("quantidade").and("status").previousOperation()
+                );
+        
+        AggregationResults<ArtigoStatusCount> result = 
+                    mongoTemplate.aggregate(typedAggregation, ArtigoStatusCount.class);
+
+        return result.getMappedResults();
     }
 
 }
