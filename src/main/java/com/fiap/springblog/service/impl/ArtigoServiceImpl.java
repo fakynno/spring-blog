@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fiap.springblog.exceptions.OptimisticLockingFailureException;
 import com.fiap.springblog.models.Artigo;
 import com.fiap.springblog.models.ArtigoStatusCount;
 import com.fiap.springblog.models.Autor;
@@ -76,8 +77,34 @@ public class ArtigoServiceImpl implements ArtigoService{
             artigo.setAutor(null);
         }
 
-        // salva o artigo com os dados do autor (caso existam)
-        return this.artigoRepository.save(artigo);
+        try {
+            // salva o artigo com os dados do autor (caso existam)
+            return this.artigoRepository.save(artigo);
+        } catch (OptimisticLockingFailureException ex) {
+
+            // Estratégia
+            // 1. Recuperar o documento mais recente do banco de dados na coleção Artigo
+
+            Artigo artigoAtualizado = this.artigoRepository.findById(artigo.getCodigo()).orElseThrow();
+            
+            // Verifica se o artigo atualizado é diferente de nulo
+            if (artigoAtualizado != null) {
+
+                // 2. Atualiza os campos desejados (nesse exemplo atualizamos apenas o título, texto e status)
+                artigoAtualizado.setTitulo(artigo.getTitulo());
+                artigoAtualizado.setTexto(artigo.getTexto());
+                artigoAtualizado.setStatus(artigo.getStatus());
+
+                // 3. Incrementa manualmente a versão do documento
+                artigoAtualizado.setVersion(artigo.getVersion() + 1);
+
+                // 4. Tenta salvar o artigo atualizado novamente
+                return this.artigoRepository.save(artigo);
+            } else {
+                // Caso o artigo atualizado seja nulo, lança uma exceção
+                throw new OptimisticLockingFailureException("Artigo não encontrado");                
+            }
+        }        
     }
 
     @Override
